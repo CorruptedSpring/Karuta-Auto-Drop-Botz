@@ -1,1 +1,1 @@
-ok
+def GetData
