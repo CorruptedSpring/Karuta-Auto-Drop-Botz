@@ -74,8 +74,25 @@ class MyWidget(QtWidgets.QWidget):
         self.TokenInput.setPlaceholderText("Discord Account Token")
         self.NameInput.setFixedSize(200, 50)
         self.TokenInput.setFixedSize(200, 50)
-        self.StartButton.setStyleSheet(" background-color: #42f569;color: #fff;")
-        self.AddBotButton.setStyleSheet("background-color: #4548ff; color: #fff;")
+        self.StartButton.setStyleSheet("""
+        QPushButton {
+        background-color: #42f569;
+        color: #fff; 
+        }
+        QPushButton:hover{
+        background-color:rgb(146, 240, 166); 
+        color: #fff;
+        }""")
+        self.AddBotButton.setStyleSheet("""
+        QPushButton {
+        background-color: #4548ff; 
+        color: #fff; 
+        }
+        QPushButton:hover{
+        background-color:rgb(166, 174, 251); 
+        color: #fff;
+        }""")
+        #Add hover to both buttons 
         self.AddBotButton.setFixedSize(100, 50)
         self.StartButton.setFixedSize(100, 50)
         self.NameInput.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -115,7 +132,16 @@ class MyWidget(QtWidgets.QWidget):
         self.ChannelIDInput.setFixedSize(200, 50)
         self.TimeBetweenDropsInput.setFixedSize(200, 50)
         self.ConfirmButton.setFixedSize(100, 50)
-        self.ConfirmButton.setStyleSheet("background-color: #42a1f5; color: #fff;")
+        self.ConfirmButton.setStyleSheet("""
+        QPushButton {
+        background-color: #42a1f5; 
+        color: #fff; 
+        }
+        QPushButton:hover{
+        background-color:rgb(146, 165, 240); 
+        color: #fff;
+        }""")
+        #Add hover to button
         
         self.ChannelIDInput.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.TimeBetweenDropsInput.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -157,7 +183,16 @@ class MyWidget(QtWidgets.QWidget):
         
         label = QtWidgets.QLabel(f"Name: {name} \t Token: {token}")
         removeBtn = QtWidgets.QPushButton("Remove")
-        removeBtn.setStyleSheet("background-color: #f54242; color: #fff;")
+        removeBtn.setStyleSheet(""" 
+        QPushButton {
+        background-color: #f54242;
+        color: #fff;
+        }
+        QPushButton:hover{
+        background-color:rgb(240, 146, 146); 
+        color: #fff;
+        }
+        """)
         removeBtn.setFixedWidth(70)
         
         layout.addWidget(label)
@@ -204,11 +239,22 @@ class MyWidget(QtWidgets.QWidget):
             self.bot_thread = threading.Thread(target=Start)
             self.bot_thread.start()
             self.StopButton = QtWidgets.QPushButton("Stop Bot")
-            self.StopButton.setStyleSheet("background-color: #f54242; color: #fff;")
+            self.StopButton.setStyleSheet("""
+            QPushButton {
+            background-color: #f54242;
+            color: #fff;
+            }
+            QPushButton:hover{
+            background-color:rgb(240, 146, 146);
+            color: #fff;
+            }
+            """)
+        #Add Hover to STyleSHeet
             self.StopButton.setFixedSize(100, 50)
             self.StartButton.hide()
             self.button_layout.replaceWidget(self.StartButton, self.StopButton)
             self.StopButton.clicked.connect(self.StopBot)
+        
             
             self.AddBotButton.setDisabled(True)
             self.NameInput.setDisabled(True)
