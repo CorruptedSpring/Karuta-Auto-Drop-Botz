@@ -1,13 +1,61 @@
 import sys
 from PySide6 import QtCore, QtWidgets, QtGui
-import subprocess
-import signal
 import os
+import threading
+import requests
+from time import sleep
+
 
 def GetData():
         with open("otherdata.data", "r") as file:
             data = file.readlines()
         return data
+
+def GetAccounts():
+    with open("accounts.data", "r") as f:
+        data = f.readlines()
+    return [line.strip().split(":")[1] for line in data[1:]]
+
+def DropKaruta(ChannelID, Token):
+    url = f"https://discord.com/api/v9/channels/{ChannelID}/messages"
+    payload = {'content': 'k!drop'}
+    header = {'Authorization': Token}
+    requests.post(url, data=payload, headers=header)
+
+def ReactLastDrop(ChannelID, Token, Emoji):
+    url = f"https://discord.com/api/v9/channels/{ChannelID}/messages"
+    header = {'Authorization': Token}
+    req = requests.get(url, headers=header)
+    LastMessageID = req.json()[0]['id']
+    url = f"https://discord.com/api/v9/channels/{ChannelID}/messages/{LastMessageID}/reactions/{Emoji}/@me"
+    requests.put(url, headers=header)
+
+def Start():
+    ChannelID = GetData()[0].strip()
+    Time = int(GetData()[1].strip())
+    One = r"1%EF%B8%8F%E2%83%A3"
+    Two = r"2%EF%B8%8F%E2%83%A3"
+    Three = r"3%EF%B8%8F%E2%83%A3"
+    drop1, drop2, drop3 = 0, 1, 2
+    while True:
+        accounts = GetAccounts()
+        accountlen = len(accounts)
+        for i in range(accountlen):
+            DropKaruta(ChannelID, accounts[i])
+            sleep(2)
+            ReactLastDrop(ChannelID, accounts[drop1], One)
+            sleep(2)
+            ReactLastDrop(ChannelID, accounts[drop2], Two)
+            sleep(2)
+            ReactLastDrop(ChannelID, accounts[drop3], Three)
+            sleep(Time)
+            drop1, drop2, drop3 = drop1 + 3, drop2 + 3, drop3 + 3
+            if drop1 >= accountlen:
+                drop1 -= accountlen
+            if drop2 >= accountlen:
+                drop2 -= accountlen
+            if drop3 >= accountlen:
+                drop3 -= accountlen
 
 class MyWidget(QtWidgets.QWidget):
     def __init__(self):
@@ -153,7 +201,8 @@ class MyWidget(QtWidgets.QWidget):
     @QtCore.Slot()
     def StartBot(self):
         if self.bot_process is None:
-            self.bot_process = subprocess.Popen([sys.executable, "bot_script.py"])
+            self.bot_thread = threading.Thread(target=Start)
+            self.bot_thread.start()
             self.StopButton = QtWidgets.QPushButton("Stop Bot")
             self.StopButton.setStyleSheet("background-color: #f54242; color: #fff;")
             self.StopButton.setFixedSize(100, 50)
@@ -170,13 +219,10 @@ class MyWidget(QtWidgets.QWidget):
             self.AccountsListWidget.setDisabled(True)
 
     def StopBot(self):
-        if self.bot_process:
-            if sys.platform == "win32":
-                subprocess.run(['taskkill', '/F', '/T', '/PID', str(self.bot_process.pid)])
-            else:
-                self.bot_process.send_signal(signal.SIGTERM)
-            self.bot_process = None
-            
+        if self.bot_thread.is_alive():
+            self.bot_thread.join(timeout=1)
+        self.bot_thread = None
+        
         self.StopButton.hide()
         self.StartButton.show()
         self.button_layout.replaceWidget(self.StopButton, self.StartButton)
