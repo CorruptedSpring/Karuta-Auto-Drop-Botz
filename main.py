@@ -340,6 +340,8 @@ class MyWidget(QtWidgets.QWidget):
             time_between_drops = int(time_between_drops.split()[0]) if "seconds" in time_between_drops else int(time_between_drops)
             with open("otherdata.data", "w") as file:
                 file.write(f"{channel_id}\n{time_between_drops}")
+            self.ChannelIDInput.setPlaceholderText(channel_id)
+            self.TimeBetweenDropsInput.setPlaceholderText(f"{time_between_drops} seconds")
         except ValueError:
             error_dialog = QtWidgets.QMessageBox(self)
             error_dialog.setWindowTitle("Input Error")
