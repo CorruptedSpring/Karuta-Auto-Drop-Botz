@@ -92,7 +92,6 @@ class MyWidget(QtWidgets.QWidget):
         background-color:rgb(166, 174, 251); 
         color: #fff;
         }""")
-        #Add hover to both buttons 
         self.AddBotButton.setFixedSize(100, 50)
         self.StartButton.setFixedSize(100, 50)
         self.NameInput.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -141,7 +140,6 @@ class MyWidget(QtWidgets.QWidget):
         background-color:rgb(146, 165, 240); 
         color: #fff;
         }""")
-        #Add hover to button
         
         self.ChannelIDInput.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.TimeBetweenDropsInput.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -249,7 +247,6 @@ class MyWidget(QtWidgets.QWidget):
             color: #fff;
             }
             """)
-        #Add Hover to STyleSHeet
             self.StopButton.setFixedSize(100, 50)
             self.StartButton.hide()
             self.button_layout.replaceWidget(self.StartButton, self.StopButton)
