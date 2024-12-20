@@ -62,7 +62,7 @@ class MyWidget(QtWidgets.QWidget):
 
         super().__init__()
         self.bot_process = None
-        self.setWindowTitle("DiscordWhatsAppLinker Bot")
+        self.setWindowTitle("Discord Karuta Bot")
         self.setWindowIcon(QtGui.QIcon("Assets/icon.ico"))
         self.NameLabel = QtWidgets.QLabel("Name :")
         self.DiscordTokenLabel = QtWidgets.QLabel("Discord Account Token :")
